@@ -1,0 +1,50 @@
+{
+  "name": "force-audio",
+  "productName": "force-audio",
+  "version": "0.1.4",
+  "description": "Force Audio is a simple macos application to keep an audio device selected even after unpluging/plugging other audio devices in.",
+  "author": "Robert Lowe",
+  "repository": "https://github.com/RobertLowe/force-audio.git",
+  "main": "main.js",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --mac",
+    "unpatched-release": "electron-builder --mac --publish always",
+	"fix-zip": "node build/fix-zip.js",
+    "release": "npm run unpatched-release && npm run fix-zip"
+  },
+  "build": {
+    "productName": "force-audio",
+    "appId": "com.robertlowe.forceaudio",
+    "copyright": "Copyright (c) 2020-2021 Robert Lowe.",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "robertlowe",
+        "repo": "force-audio"
+      }
+    ],
+    "mac": {
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.plist",
+      "entitlementsInherit": "build/entitlements.plist",
+      "icon": "volume.icns",
+      "category": "public.app-category.utilities"
+    },
+	"afterSign": "build/notarize.js"
+  },
+  "dependencies": {
+    "electron-log": "^4.3.5",
+    "electron-updater": "^4.3.9",
+    "macos-audio-devices": "^1.4.0",
+    "node-notifier": "^10.0.0"
+  },
+  "devDependencies": {
+    "electron": "^13.1.5",
+    "electron-builder": "^22.11.7",
+    "electron-notarize": "^1.0.0"
+  }
+}
